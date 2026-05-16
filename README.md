@@ -1,0 +1,2 @@
+# layih-
+kitabxana idarəetmə sistemi 
