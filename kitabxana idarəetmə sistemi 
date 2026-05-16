@@ -1,0 +1,196 @@
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace KitabxanaIdareetme
+{
+    // Kitab classı
+    class Kitab
+    {
+        // Private fieldlər
+        private string ad;
+        private string muellif;
+        private int il;
+        private string janr;
+
+        // Constructor
+        public Kitab(string ad, string muellif, int il, string janr)
+        {
+            this.ad = ad;
+            this.muellif = muellif;
+            this.il = il;
+            this.janr = janr;
+        }
+
+        // Get və Set metodları
+        public string GetAd()
+        {
+            return ad;
+        }
+
+        public void SetAd(string ad)
+        {
+            this.ad = ad;
+        }
+
+        public string GetMuellif()
+        {
+            return muellif;
+        }
+
+        public void SetMuellif(string muellif)
+        {
+            this.muellif = muellif;
+        }
+
+        public int GetIl()
+        {
+            return il;
+        }
+
+        public void SetIl(int il)
+        {
+            this.il = il;
+        }
+
+        public string GetJanr()
+        {
+            return janr;
+        }
+
+        public void SetJanr(string janr)
+        {
+            this.janr = janr;
+        }
+
+        // Məlumat çap etmə
+        public void MelumatCapEt()
+        {
+            Console.WriteLine("Kitab adı: " + ad);
+            Console.WriteLine("Müəllif: " + muellif);
+            Console.WriteLine("Nəşr ili: " + il);
+            Console.WriteLine("Janr: " + janr);
+            Console.WriteLine("------------------------");
+        }
+    }
+
+    // Database classı
+    class Database
+    {
+        // List saxlayır
+        private List<Kitab> kitablar = new List<Kitab>();
+
+        // Kitab əlavə etmə
+        public void ElaveEt(Kitab kitab)
+        {
+            kitablar.Add(kitab);
+            Console.WriteLine("Kitab əlavə edildi.");
+        }
+
+        // Kitab silmə
+        public void Sil(string ad)
+        {
+            Kitab tapilan = kitablar.Find(k => k.GetAd() == ad);
+
+            if (tapilan != null)
+            {
+                kitablar.Remove(tapilan);
+                Console.WriteLine("Kitab silindi.");
+            }
+            else
+            {
+                Console.WriteLine("Kitab tapılmadı.");
+            }
+        }
+
+        // Kitab dəyişdirmə
+        public void Deyis(string ad, string yeniAd)
+        {
+            Kitab tapilan = kitablar.Find(k => k.GetAd() == ad);
+
+            if (tapilan != null)
+            {
+                tapilan.SetAd(yeniAd);
+                Console.WriteLine("Kitab məlumatı dəyişdirildi.");
+            }
+            else
+            {
+                Console.WriteLine("Kitab tapılmadı.");
+            }
+        }
+
+        // Bütün kitabları çap etmə
+        public void CapEt()
+        {
+            if (kitablar.Count == 0)
+            {
+                Console.WriteLine("Siyahı boşdur.");
+            }
+            else
+            {
+                foreach (Kitab kitab in kitablar)
+                {
+                    kitab.MelumatCapEt();
+                }
+            }
+        }
+
+        // Axtarış metodu
+        public void Axtar(string ad)
+        {
+            Kitab tapilan = kitablar.Find(k => k.GetAd().ToLower() == ad.ToLower());
+
+            if (tapilan != null)
+            {
+                Console.WriteLine("Kitab tapıldı:");
+                tapilan.MelumatCapEt();
+            }
+            else
+            {
+                Console.WriteLine("Kitab tapılmadı.");
+            }
+        }
+
+        // Get Data metodu
+        public List<Kitab> GetData()
+        {
+            return kitablar;
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Database db = new Database();
+
+            // Kitablar əlavə edilir
+            db.ElaveEt(new Kitab("1984", "George Orwell", 1949, "Distopiya"));
+            db.ElaveEt(new Kitab("Cinayət və Cəza", "Dostoyevski", 1866, "Roman"));
+
+            // Siyahını çap et
+            Console.WriteLine("Bütün kitablar:");
+            db.CapEt();
+
+            // Axtarış
+            db.Axtar("1984");
+
+            // Dəyişdirmə
+            db.Deyis("1984", "Animal Farm");
+
+            // Yenidən çap
+            Console.WriteLine("Yenilənmiş siyahı:");
+            db.CapEt();
+
+            // Silmə
+            db.Sil("Animal Farm");
+
+            // Son vəziyyət
+            Console.WriteLine("Son siyahı:");
+            db.CapEt();
+
+            Console.ReadLine();
+        }
+    }
+}
